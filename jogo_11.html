@@ -1,0 +1,80 @@
+<html>
+<head>
+  <title>TESTE TIROS</title>
+  <script src="animacao.js"></script>
+  <script src="teclado.js"></script>
+  <script src="nave.js"></script>
+  <script src="tiro.js"></script>
+  <script src="fundo.js"></script>
+</head>
+<body>
+   <canvas id="canvas_nave" width="500" height="500"></canvas>
+   <script>
+	     var canvas = document.getElementById("canvas_nave");
+		 var context = canvas.getContext('2d');
+		 
+		 var teclado = new Teclado(document);
+		 var animacao = new Animacao(context);
+		 var imgNave = new Image();
+		 imgNave.src = "06/img/nave.png";
+		 var nave = new Nave(context, teclado, imgNave);
+		
+		var imgEspaco = new Image();
+  	    imgEspaco.src = '06/img/fundo-espaco.png';
+	  
+	    var imgEstrelas = new Image();
+	    imgEstrelas.src = '06/img/fundo-estrelas.png';
+	  
+	    var imgNuvens = new Image();
+	    imgNuvens.src = '06/img/fundo-nuvens.png'; 
+	  
+	    var carregadas = 0;
+	    var total = 3;
+	  
+	    imgEspaco.onload = carregando;
+	    imgEstrelas.onload = carregando;
+	    imgNuvens.onload = carregando;
+		imgNave.onload = carregando;
+	  
+	    function carregando() {
+	       carregadas++;
+		 
+		   if (carregadas == total) iniciar();
+	     };
+		
+		
+        function iniciar() {
+		   teclado.disparou(ESPACO, function() {
+		      //
+		      nave.atirar();
+		    }) ;
+
+		    nave.x = canvas.width / 2 - imgNave.width / 2;
+			nave.y = canvas.height - imgNave.height;
+			nave.velocidade = 5;
+			
+			var fundoEspaco = new Fundo(context, imgEspaco);
+		    var fundoEstrelas = new Fundo(context, imgEstrelas);
+		    var fundoNuvens = new Fundo(context, imgNuvens);
+		 
+		    fundoEspaco.velocidade = 3;
+		    fundoEstrelas.velocidade = 7;
+		    fundoNuvens.velocidade = 10;
+		 
+			 var animacao = new Animacao(context);
+			 animacao.novoSprite(fundoEspaco);
+			 animacao.novoSprite(fundoEstrelas);
+			 animacao.novoSprite(fundoNuvens);
+			 animacao.novoSprite(nave);
+			 animacao.ligar();
+			
+		 }
+		 
+	  
+   </script>
+</body>
+
+
+</head>
+
+</html>

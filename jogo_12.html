@@ -1,0 +1,74 @@
+<html>
+<head>
+  <title>TESTE INIMIGOS</title>
+  <script src="animacao.js"></script>
+  <script src="teclado.js"></script>
+  <script src="nave.js"></script>
+  <script src="tiro.js"></script>
+  <script src="colisor.js"></script>
+  <script src="ovni.js"></script>
+</head>
+<body>
+   <canvas id="canvas_inimigos" width="500" height="500"></canvas>
+   <script>
+	     var canvas = document.getElementById("canvas_inimigos");
+		 var context = canvas.getContext('2d');
+		 var teclado = new Teclado(document);
+		 var animacao = new Animacao(context); 
+		 var carregadas = 0;
+
+		 var imgNave = new Image();
+		 imgNave.src = "06/img/nave.png";
+		 imgNave.onload = carregando;
+		 var nave = new Nave(context, teclado, imgNave);
+		 animacao.novoSprite(nave);
+		 var colisor = new Colisor();
+		 colisor.novoSprite(nave);
+		 
+		  teclado.disparou(ESPACO, function() {
+		    nave.atirar();
+		 });
+		 		 
+		 var imgOvni = new Image();
+		 imgOvni.src = "06/img/ovni.png";
+		 imgOvni.onload = carregando;
+		 
+		 function carregando() {
+		    carregadas++;
+			if (carregadas == 2) iniciar();
+		 
+		 };
+		 
+		 function iniciar() {
+		    nave.x = canvas.width / 2 - imgNave.width / 2;
+			nave.y = canvas.height / 2 - imgNave.height;
+			nave.velocidade = 5;
+			animacao.ligar();
+			
+			setInterval(novoOvni, 1000);
+		 };
+		 
+		 function novoOvni() {
+		    var ovni = new Ovni(context, imgOvni);
+			
+			ovni.velocidade =
+			  Math.floor( 5 + Math.random() * (20 -5 +1) );
+			  
+			ovni.x =
+              Math.floor(Math.random() *
+                          (canvas.width - imgOvni.width + 1) );
+            
+			ovni.y = -imgOvni.height;
+        
+            animacao.novoSprite(ovni);
+            colisor.novoSprite(ovni);			
+		 }
+		 
+		
+   </script>
+</body>
+
+
+</head>
+
+</html>
